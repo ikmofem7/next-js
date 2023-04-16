@@ -1,13 +1,24 @@
-import Image from 'next/image'
-import { Inter } from '@next/font/google'
-import styles from './page.module.css'
+import Image from "next/image";
+import { Inter } from "@next/font/google";
+import styles from "./page.module.css";
+import Header from "@/components/Header";
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] });
+const getData = async () => {
+  const data = await fetch("https://www.reddit.com/.json");
+  return data.json();
+};
 
-export default function Home() {
+export default async function Home() {
+  const data = await getData();
+  const title = data?.data.children[0].data.title;
+  console.log({ title });
+
   return (
     <main className={styles.main}>
       <div className={styles.description}>
+        <Header />
+        <h1>{title}</h1>
         <p>
           Get started by editing&nbsp;
           <code className={styles.code}>src/app/page.tsx</code>
@@ -18,7 +29,7 @@ export default function Home() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            By{' '}
+            By{" "}
             <Image
               src="/vercel.svg"
               alt="Vercel Logo"
@@ -87,5 +98,5 @@ export default function Home() {
         </a>
       </div>
     </main>
-  )
+  );
 }
